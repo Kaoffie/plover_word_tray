@@ -177,6 +177,10 @@ class WordTraySuggestions(WordTrayUI):
             self.engine._translator.word_tray_state = ""
 
         prev_translations: List[Translation] = self.engine.translator_state.prev()
+
+        if not prev_translations:
+            return
+
         retro_formatter: RetroFormatter = RetroFormatter(prev_translations)
         last_fragment: List[str] = retro_formatter.last_fragments()
 
@@ -186,12 +190,13 @@ class WordTraySuggestions(WordTrayUI):
         curr_word: str = last_fragment[-1].strip()
 
         if prev_translations:
-            last_translation = prev_translations[-1].english.strip()
-            if (
-                last_translation.replace(" ", "").isalnum()
-                and len(last_translation) > len(curr_word)
-            ):
-                curr_word = last_translation
+            last_translation = prev_translations[-1].english
+            if last_translation is not None:
+                if (
+                    last_translation.replace(" ", "").isalnum()
+                    and len(last_translation) > len(curr_word)
+                ):
+                    curr_word = last_translation.strip()
 
         if curr_word and update_suggestions:
             self.current_translation.setPlainText(curr_word)
