@@ -1,0 +1,2 @@
+exclude plover_word_tray/*_rc.py
+recursive-include plover_word_tray/resources *

@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="/word_tray">
+    <file>pin.svg</file>
+    <file>settings.svg</file>
+    <file>add_database.svg</file>
+  </qresource>
+</RCC>
