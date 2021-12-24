@@ -17,7 +17,7 @@ plover -s plover_plugins install plover_word_tray
 Alternatively, if you are on Windows, locate the directory where Plover.exe is located in and install using the following command:
 
 ```
-.\plover_command.exe -s plover_plugins install plover_word_tray
+.\plover_console.exe -s plover_plugins install plover_word_tray
 ```
 
 ## Usage Notes
