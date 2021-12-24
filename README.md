@@ -72,7 +72,7 @@ def WT_SORTER(entry: Tuple[str, Tuple[str, ...]]) -> int:
     it need not be an int - anything that can be compared
     works, including strings or tuples of ints.
     """
-    outline, translation = entry
+    translation, outline = entry
     return ...
 ```
 
