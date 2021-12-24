@@ -64,7 +64,6 @@ class TranslationNode:
             ]
 
     def add_child(self, translation: str, lower_tl: str, outline: OUTLINE_TYPE) -> None:
-        # print("Adding", translation, "in", self.translation)
         if not outline:
             return
 
@@ -88,12 +87,14 @@ class TranslationNode:
                     grandchild = self.children.pop(key)
                     new_child = TranslationNode(prefix, self.tolerance)
                     new_child.children[key] = grandchild
-                    new_child.add_outline(translation, outline)
+                    new_child.add_child(translation, lower_tl, outline)
                     self.children[prefix] = new_child
 
                 return
 
-        self.children[lower_tl] = TranslationNode(translation, self.tolerance)
+        new_node = TranslationNode(lower_tl, self.tolerance)
+        new_node.add_outline(translation, outline)
+        self.children[lower_tl] = new_node
 
     def match_prefix(self, prefix: str) -> List[Tuple[str, OUTLINE_TYPE]]:
         suggestions_list = []

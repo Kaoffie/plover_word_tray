@@ -30,6 +30,12 @@ class WordTrayUI(Tool):
         self.finished.connect(self.save_state)
 
     def _restore_state(self, settings: QSettings) -> None:
+        if settings.contains("to_pseudo"):
+            self.config.to_pseudo = settings.value("to_pseudo", type=bool)
+
+        if settings.contains("tolerance"):
+            self.config.tolerance = settings.value("tolerance", type=int)
+
         if settings.contains("row_height"):
             self.config.row_height = settings.value("row_height", type=int)
         
@@ -48,6 +54,8 @@ class WordTrayUI(Tool):
             self.resize(260, 400)
         
     def _save_state(self, settings: QSettings) -> None:
+        settings.setValue("to_pseudo", self.config.to_pseudo)
+        settings.setValue("tolerance", self.config.tolerance)
         settings.setValue("row_height", self.config.row_height)
         settings.setValue("pinned", self.pin_action.isChecked())
         settings.setValue("page_len", self.config.page_len)
