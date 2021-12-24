@@ -12,6 +12,7 @@ LEFT_KEYS = {
     "STK":  [(r"d[ie][sz]", "DS"), ("", "SD")],
     "S":    "S",
     "THR":  [(r"th[a-z]{0,5}r", "THR"), ("", "TL")],
+    "TPHR": [(r"n[a-z]{0,5}r", "NR"), ("", "FL")],
     "TH":   "TH",
     "TPH":  [(r"t[a-z]{0,5}m", "TM"), ("", "N")],
     "TKPW": [(r"d.*b", "DB"), ("", "G")],
