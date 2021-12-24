@@ -8,17 +8,7 @@
 
 ## Installation
 
-This plugin isn't on the Plover Plugin Registry yet; install it with the following command:
-
-```
-plover -s plover_plugins install plover_word_tray
-```
-
-Alternatively, if you are on Windows, locate the directory where Plover.exe is located in and install using the following command:
-
-```
-.\plover_console.exe -s plover_plugins install plover_word_tray
-```
+Install Word Tray using the Plugin Manager!
 
 ## Usage Notes
 
