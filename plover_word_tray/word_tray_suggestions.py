@@ -135,7 +135,6 @@ class WordTraySuggestions(WordTrayUI):
         engine.signal_connect("stroked", self.on_stroke)
         engine.signal_connect("dictionaries_loaded", self.on_dict_update)
         engine.signal_connect("config_changed", self.on_config_changed)
-        engine.signal_connect("add_translation", self.on_dict_update)
         self.index_dictionaries()
         self.on_config_changed()
 
