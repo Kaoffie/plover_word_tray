@@ -1,17 +1,16 @@
 from PyQt5.QtWidgets import QTableWidgetItem
 
-from typing import Dict, Tuple, List, Optional, Any
+from typing import Dict, Tuple, List, Optional, Any, Callable
 
 from plover import system
 from plover.engine import StenoEngine
 from plover.formatting import RetroFormatter
 from plover.registry import registry
-from plover.steno import Stroke
 from plover.steno_dictionary import StenoDictionary, StenoDictionaryCollection
 from plover.translation import Translation
 
 from plover_word_tray.word_tray_ui import WordTrayUI
-from plover_word_tray.sorting import SortingType, get_sorter, sort_suggestions
+from plover_word_tray.sorting import sort_suggestions
 
 
 OUTLINE_TYPE = Tuple[str, ...]
@@ -128,7 +127,7 @@ class WordTraySuggestions(WordTrayUI):
         self._prev_node: Optional[TranslationNode] = None
         self._page = 0
 
-        self._stroke_formatter: Optional[Callable[[STROKE_TYPE], STROKE_TYPE]] = None
+        self._stroke_formatter: Optional[Callable[[str], str]] = None
         self._translation_formatter: Optional[Callable[[str], str]] = None
         self._system_sorter: Optional[Callable[[Tuple[OUTLINE_TYPE, str]], Any]] = None
 
