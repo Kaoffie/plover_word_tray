@@ -66,7 +66,7 @@ def WT_SORTER(entry: Tuple[str, Tuple[str, ...]]) -> int:
     return ...
 ```
 
-All suggestions will be run through the two formatters (if available) before being sorted. If the user chooses to turn on pseudosteno formatting, the pseudo conversion will happen first before that is passed to the sorter. The sorter will only be used if the user changes their display order to "System Defined".
+All suggestions will be run through the two formatters (if available) before being sorted. If the user chooses to turn on pseudosteno formatting, the pseudo conversion will happen after sorting. The sorter will only be used if the user changes their display order to "System Defined".
 
 ## License & Credits
 

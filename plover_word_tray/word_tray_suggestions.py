@@ -144,7 +144,7 @@ class WordTraySuggestions(WordTrayUI):
         displayed = self._suggestions[top_index:top_index + self.config.page_len]
         display_len = len(displayed)
 
-        for index, (translation, outline) in enumerate(displayed):
+        for index, (translation, raw_outline, outline) in enumerate(displayed):
             self.suggestions_table.setItem(index, 0, QTableWidgetItem(translation))
             self.suggestions_table.setItem(index, 1, QTableWidgetItem("/".join(outline)))
 
@@ -187,9 +187,11 @@ class WordTraySuggestions(WordTrayUI):
             return
 
         curr_word: str = last_fragment[-1].strip()
+        last_outline = tuple()
 
         if prev_translations:
             last_translation = prev_translations[-1].english
+            last_outline = prev_translations[-1].rtfcre
             if last_translation is not None:
                 if (
                     last_translation.replace(" ", "").isalnum()
@@ -215,6 +217,7 @@ class WordTraySuggestions(WordTrayUI):
                 suggestions=raw_suggestions,
                 sorting_type=self.config.sorting_type,
                 to_pseudo=self.config.to_pseudo,
+                last_outline=last_outline,
                 stroke_formatter=self._stroke_formatter,
                 translation_formatter=self._translation_formatter,
                 system_sorter=self._system_sorter

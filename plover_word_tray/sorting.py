@@ -33,45 +33,87 @@ def to_int(string: str, default: int) -> int:
         return default
 
 
-def get_sorter(sorting_type: SortingType) -> Callable[[Tuple[str, OUTLINE_TYPE]], Any]:
+def get_sorter(
+    sorting_type: SortingType, 
+    last_outline: Tuple[str, ...]
+) -> Callable[[Tuple[str, OUTLINE_TYPE]], Any]:
     if sorting_type == SortingType.FREQUENCY:
         if system.ORTHOGRAPHY_WORDS is not None:
-            return lambda s: (system.ORTHOGRAPHY_WORDS.get(s[1], 999999), len(s[1]))
+            return lambda s: (
+                system.ORTHOGRAPHY_WORDS.get(s[0], 999999), 
+                s[1] != last_outline, 
+                len(s[1])
+            )
         else:
-            return lambda s: (len(s[0]), s[0], len(s[1]), s[1])
+            return lambda s: (
+                len(s[0]), 
+                s[1] != last_outline,
+                s[0], 
+                len(s[1]), 
+                s[1]
+            )
 
     elif sorting_type == SortingType.STROKE_COUNT:
-        return lambda s: (len(s[1]), s[1], len(s[0]), s[0])
+        return lambda s: (
+            len(s[1]), 
+            s[1] != last_outline,
+            s[1], 
+            len(s[0]), 
+            s[0]
+        )
 
     elif sorting_type == SortingType.ALPHABETICAL:
-        return lambda s: (s[0].lower(), len(s[1]), s[1])
+        return lambda s: (
+            s[0].lower(), 
+            s[1] != last_outline,
+            len(s[1]), 
+            s[1]
+        )
 
-    return lambda s: (len(s[0]), s[0], len(s[1]), s[1])
+    return lambda s: (
+        len(s[0]), 
+        s[1] != last_outline,
+        s[0], 
+        len(s[1]), 
+        s[1]
+    )
 
 
 def sort_suggestions(
     suggestions: List[Tuple[str, OUTLINE_TYPE]], 
     sorting_type: SortingType,
     to_pseudo: bool,
+    last_outline: Tuple[str, ...],
     stroke_formatter: Optional[Callable[[str], str]] = None,
     translation_formatter: Optional[Callable[[str], str]] = None,
-    system_sorter: Optional[Callable[[Tuple[str, Tuple[str, ...]]], Any]] = None
+    system_sorter: Optional[Callable[[Tuple[str, Tuple[str, ...]]], Any]] = None,
 ) -> List[Tuple[str, OUTLINE_TYPE]]:
-    result = []
-    for translation, outline in suggestions:
-        if to_pseudo:
-            outline = format_pseudo(outline, translation)
+    formatted_sgns = []
+    for translation, raw_outline in suggestions:
         if stroke_formatter is not None:
-            outline = tuple(stroke_formatter(s) for s in outline)
+            raw_outline = tuple(stroke_formatter(s) for s in raw_outline)
         if translation_formatter is not None:
             translation = translation_formatter(translation)
         
-        result.append((translation, outline))
+        formatted_sgns.append((translation, raw_outline))
     
+    sorted_sgns = []
     if sorting_type == SortingType.SYSTEM_DEFINED:
         if system_sorter is not None:
-            return sorted(result, key=system_sorter)
+            sorted_sgns = sorted(formatted_sgns, key=system_sorter)
         
         sorting_type = SortingType.LENGTH
     
-    return sorted(result, key=get_sorter(sorting_type))
+    if formatted_sgns and not sorted_sgns:
+        sorted_sgns = sorted(formatted_sgns, key=get_sorter(sorting_type, last_outline))
+
+    with_pseudo = []
+    for translation, raw_outline in sorted_sgns:
+        if to_pseudo:
+            pseudo_outline = format_pseudo(raw_outline, translation)
+        else:
+            pseudo_outline = ""
+        
+        with_pseudo.append((translation, raw_outline, pseudo_outline))
+    
+    return with_pseudo

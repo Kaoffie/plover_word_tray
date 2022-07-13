@@ -237,36 +237,3 @@ def format_pseudo(outline: Tuple[str, ...], word: str) -> Tuple[str, ...]:
         stroke_builder.append(pseudo)
     
     return tuple(stroke_builder)
-
-
-test_list = [
-    ("access", "KPES"),
-    ("execution", "EBGS/KAOUGS"),
-    ("taxation", "TA*EUBGS"),
-    ("commune", "KPHAOUPB"),
-    ("simpler", "SPHRER"),
-    ("decision", "STKEUGS"),
-    ("distinguish", "STKPWEUGS"),
-    ("again", "STKPWEPB"),
-    ("region", "RAOEGS"),
-    ("fashion", "TPAGS"),
-    ("donation", "TKOEPBGS"),
-    ("mention", "PHEPBGS"),
-    ("absorption", "SPWORBGS"),
-    ("dark", "TKARBG"),
-    ("everybody", "EFRB"),
-    ("several", "SEFRL"),
-    ("silver", "SEUFRL"),
-    ("disposition", "TKEUFPGS"),
-    ("suspicion", "SUFPGS"),
-    ("resistant", "REUFPBT"),
-    ("defend", "TKEFPBD"),
-    ("whisper", "WHEUFP/*ER"),
-    ("helpful", "HEFPL"),
-    ("evidence based medicine", "PWEFPL"),
-]
-
-if __name__ == "__main__":
-    for (word, outline) in test_list:
-        outline_s = tuple(outline.split("/"))
-        print(word, format_pseudo(outline_s, word))
