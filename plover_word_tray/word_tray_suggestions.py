@@ -98,7 +98,7 @@ class TranslationNode:
     def match_prefix(self, prefix: str) -> List[Tuple[str, OUTLINE_TYPE]]:
         suggestions_list = []
         
-        if self.translation.startswith(prefix):
+        if self.translation.lower().startswith(prefix):
             suggestions_list = [(tl, ol) for tl, ols in self.outlines.items() for ol in ols]
         
         for key, node in self.children.items():
