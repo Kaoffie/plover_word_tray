@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import (
-    QMenuBar, QTableWidget, QFrame, QGridLayout, 
+    QTableWidget, QGridLayout, 
     QHeaderView, QLabel, QPlainTextEdit, QAction, 
     QAbstractItemView
 )
@@ -136,6 +136,7 @@ class WordTrayUI(Tool):
         if config_dialog.exec():
             self.config = config_dialog.temp_config
             self.suggestions_table.setRowCount(self.config.page_len)
+            self.suggestions_table.setColumnCount(2 + (self.config.to_pseudo and self.config.show_both) * 1)
             self.suggestions_table.verticalHeader().setDefaultSectionSize(self.config.row_height)
             self.suggestions_table.setMinimumHeight(self.config.row_height * self.config.page_len + self.config.row_height)
 

@@ -3,6 +3,7 @@ from plover_word_tray.sorting import SortingType
 
 CONFIG_ITEMS = {
     "to_pseudo": False,
+    "show_both": False,
     "tolerance": 1,
     "row_height": 30,
     "page_len": 10,

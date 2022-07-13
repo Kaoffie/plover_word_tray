@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import (
     QDialog, QWidget, QLabel, QSpinBox, QCheckBox,
     QComboBox, QDialogButtonBox, QGridLayout
 )
+from PyQt5.QtCore import pyqtSlot
 
 from plover_word_tray.word_tray_config import WordTrayConfig
 from plover_word_tray.sorting import SortingType, sorting_descriptions
@@ -13,6 +14,14 @@ class ConfigUI(QDialog):
         super().__init__(parent)
         self.temp_config = temp_config
         self.setup_window()
+    
+    @pyqtSlot()
+    def on_state_change(self):
+        self.show_both_box.setEnabled(self.to_pseudo_box.isChecked())
+        self.show_both_box.setChecked(
+            self.to_pseudo_box.isChecked() and 
+            self.show_both_box.isChecked()
+        )
 
     def setup_window(self) -> None:
         self.resize(350, 200)
@@ -22,6 +31,14 @@ class ConfigUI(QDialog):
 
         self.to_pseudo_box = QCheckBox(self)
         self.to_pseudo_box.setChecked(self.temp_config.to_pseudo)
+        self.to_pseudo_box.stateChanged.connect(self.on_state_change)
+
+        self.show_both_label = QLabel(self)
+        self.show_both_label.setText("Show Original Stroke")
+
+        self.show_both_box = QCheckBox(self)
+        self.show_both_box.setChecked(self.temp_config.show_both)
+        self.show_both_box.setEnabled(self.to_pseudo_box.isChecked())
 
         self.tolerance_label = QLabel(self)
         self.tolerance_label.setText("Outline Length Tolerance")
@@ -64,19 +81,25 @@ class ConfigUI(QDialog):
         self.layout = QGridLayout()
         self.layout.addWidget(self.to_pseudo_label, 0, 0)
         self.layout.addWidget(self.to_pseudo_box, 0, 1)
-        self.layout.addWidget(self.tolerance_label, 1, 0)
-        self.layout.addWidget(self.tolerance_box, 1, 1)
-        self.layout.addWidget(self.row_height_label, 2, 0)
-        self.layout.addWidget(self.row_height_box, 2, 1)
-        self.layout.addWidget(self.page_len_label, 3, 0)
-        self.layout.addWidget(self.page_len_box, 3, 1)
-        self.layout.addWidget(self.sorting_type_label, 4, 0)
-        self.layout.addWidget(self.sorting_type_box, 4, 1)
-        self.layout.addWidget(self.button_box, 5, 0, 2, 1)
+        self.layout.addWidget(self.show_both_label, 1, 0)
+        self.layout.addWidget(self.show_both_box, 1, 1)
+        self.layout.addWidget(self.tolerance_label, 2, 0)
+        self.layout.addWidget(self.tolerance_box, 2, 1)
+        self.layout.addWidget(self.row_height_label, 3, 0)
+        self.layout.addWidget(self.row_height_box, 3, 1)
+        self.layout.addWidget(self.page_len_label, 4, 0)
+        self.layout.addWidget(self.page_len_box, 4, 1)
+        self.layout.addWidget(self.sorting_type_label, 5, 0)
+        self.layout.addWidget(self.sorting_type_box, 5, 1)
+        self.layout.addWidget(self.button_box, 6, 0, 2, 1)
         self.setLayout(self.layout)
 
     def save_settings(self) -> None:
         self.temp_config.to_pseudo = self.to_pseudo_box.isChecked()
+        self.temp_config.show_both = (
+            self.to_pseudo_box.isChecked() and 
+            self.show_both_box.isChecked()
+        )
         self.temp_config.tolerance = self.tolerance_box.value()
         self.temp_config.row_height = self.row_height_box.value()
         self.temp_config.page_len = self.page_len_box.value()

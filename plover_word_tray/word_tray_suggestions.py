@@ -144,14 +144,23 @@ class WordTraySuggestions(WordTrayUI):
         displayed = self._suggestions[top_index:top_index + self.config.page_len]
         display_len = len(displayed)
 
+        third_col = self.config.to_pseudo and self.config.show_both
+
         for index, (translation, raw_outline, outline) in enumerate(displayed):
             self.suggestions_table.setItem(index, 0, QTableWidgetItem(translation))
-            self.suggestions_table.setItem(index, 1, QTableWidgetItem("/".join(outline)))
+            if self.config.to_pseudo:
+                self.suggestions_table.setItem(index, 1, QTableWidgetItem("/".join(outline)))
+                if third_col:
+                    self.suggestions_table.setItem(index, 2, QTableWidgetItem("/".join(raw_outline)))
+            else:
+                self.suggestions_table.setItem(index, 1, QTableWidgetItem("/".join(raw_outline)))
 
         if display_len < self.config.page_len:
             for index in range(display_len, self.config.page_len):
                 self.suggestions_table.setItem(index, 0, QTableWidgetItem(""))
                 self.suggestions_table.setItem(index, 1, QTableWidgetItem(""))
+                if third_col:
+                    self.suggestions_table.setItem(index, 2, QTableWidgetItem(""))
         
         self.page_label.setText(f"Page {self._page + 1} of {page_count}")
 
